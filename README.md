@@ -1,0 +1,2 @@
+# employment-verification-client-java
+This API lets you verify a person employment status. If a person has a job it also returns the industrial sector and the industry COVID risk segment.  Topics Resources  Readme License  Apache-2.0 License Releases  1 tags Create a new release Packages No packages published Publish your first package Contributors 3 @dramon-z dramon-z @bryantcancino bryantcancino Bryant Cancino @macr243 macr243 Languages Java 100.0%
