@@ -20,10 +20,10 @@ import com.cdc.apihub.mx.employmentVerification.client.model.EmploymentVerificat
 import com.cdc.apihub.mx.employmentVerification.client.model.EmploymentVerificationWithPrivacyNotice;
 import com.cdc.apihub.mx.employmentVerification.client.model.FullName;
 import com.cdc.apihub.mx.employmentVerification.client.model.PrivacyNotice;
+import com.cdc.apihub.mx.employmentVerification.client.model.StateCatalog;
 import com.cdc.apihub.mx.employmentVerification.client.model.PrivacyNotice.AcceptanceEnum;
 import com.cdc.apihub.signer.manager.interceptor.SignerInterceptor;
 
-import io.cdc.apihub.mx.employmentVerification.client.model.StateCatalog;
 import okhttp3.OkHttpClient;
 
 import java.util.UUID;

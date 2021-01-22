@@ -4,8 +4,6 @@ import java.util.Objects;
 
 import com.google.gson.annotations.SerializedName;
 
-import io.cdc.apihub.mx.employmentVerification.client.model.StateCatalog;
-
 public class Address {
 	@SerializedName("streetAndNumber")
 	private String streetAndNumber = null;

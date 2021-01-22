@@ -315,7 +315,7 @@ public class EmploymentVerificationApi {
 		Object localVarPostBody = body;
 
 		// create path and map variables
-		String localVarPath = "/v1/eva/employmentverifications";
+		String localVarPath = "/v1/eva/employmentverifications/withAuthorization";
 
 		List<Pair> localVarQueryParams = new ArrayList<Pair>();
 		List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();

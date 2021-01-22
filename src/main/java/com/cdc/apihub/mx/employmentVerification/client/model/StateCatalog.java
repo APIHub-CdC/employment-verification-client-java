@@ -1,4 +1,4 @@
-package io.cdc.apihub.mx.employmentVerification.client.model;
+package com.cdc.apihub.mx.employmentVerification.client.model;
 
 import java.io.IOException;
 import com.google.gson.TypeAdapter;
