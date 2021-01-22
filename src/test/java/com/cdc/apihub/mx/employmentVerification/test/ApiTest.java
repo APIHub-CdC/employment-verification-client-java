@@ -14,10 +14,16 @@ import com.cdc.apihub.mx.employmentVerification.client.ApiException;
 import com.cdc.apihub.mx.employmentVerification.client.api.EmploymentVerificationApi;
 import com.cdc.apihub.mx.employmentVerification.client.model.AckEVRequest;
 import com.cdc.apihub.mx.employmentVerification.client.model.AckSuccessEVConsumption;
+import com.cdc.apihub.mx.employmentVerification.client.model.Address;
 import com.cdc.apihub.mx.employmentVerification.client.model.EmploymentVerification;
 import com.cdc.apihub.mx.employmentVerification.client.model.EmploymentVerificationMetadata;
+import com.cdc.apihub.mx.employmentVerification.client.model.EmploymentVerificationWithPrivacyNotice;
+import com.cdc.apihub.mx.employmentVerification.client.model.FullName;
+import com.cdc.apihub.mx.employmentVerification.client.model.PrivacyNotice;
+import com.cdc.apihub.mx.employmentVerification.client.model.PrivacyNotice.AcceptanceEnum;
 import com.cdc.apihub.signer.manager.interceptor.SignerInterceptor;
 
+import io.cdc.apihub.mx.employmentVerification.client.model.StateCatalog;
 import okhttp3.OkHttpClient;
 
 import java.util.UUID;
@@ -100,6 +106,39 @@ public class ApiTest {
 
 
           Assert.assertNotNull(response);
+          logger.info(response.toString());
+      }
+      
+      @Test
+      public void employmentverificationsWithPrivacyNoticeTest() throws ApiException {
+          EmploymentVerificationWithPrivacyNotice body = new EmploymentVerificationWithPrivacyNotice();
+          EmploymentVerification ev = new EmploymentVerification();
+          PrivacyNotice privacyNotice = new PrivacyNotice();
+          FullName fullName = new FullName();
+          Address address = new Address();
+          
+          fullName.setFirstName(null);
+          fullName.setFirstSurname(null);
+          fullName.setSecondSurname(null);
+          
+          address.setStreetAndNumber(null);
+          address.setSettlement(null);
+          address.setCounty(null);
+          address.setCity(null);
+          address.setState(StateCatalog.JAL);
+          address.setPostalCode(null);
+          
+          privacyNotice.setFullName(fullName);
+          privacyNotice.setAddress(address);
+          privacyNotice.setAcceptance(AcceptanceEnum.Y);
+          
+          ev.setEmploymentVerificationRequestId(UUID.fromString("uuid"));
+          ev.setSubscriptionId(UUID.fromString("uuid"));
+          
+          body.setEmploymentVerification(ev); 
+          body.setPrivacyNotice(privacyNotice);
+          
+          AckEVRequest response = api.employmentverificationsWithPrivacyNotice(body, this.xApiKey, this.usernameCDC, this.passwordCDC);
           logger.info(response.toString());
       }
 }
