@@ -1,47 +1,46 @@
-# employment-verification-client-java [![GitHub Packages](https://img.shields.io/badge/Maven&nbsp;package-Last&nbsp;version-lemon)](https://github.com/orgs/APIHub-CdC/packages?repo_name=employment-verification-client-java) 
+# Employment verification client java [![GitHub Packages](https://img.shields.io/badge/Maven&nbsp;package-Last&nbsp;version-lemon)](https://github.com/orgs/APIHub-CdC/packages?repo_name=employment-verification-client-java) 
 
-Employment verification.
 
-## Requisitos
+
+## Requirements
 
 1. Java >= 1.7
 2. Maven >= 3.3
 
-## Instalación
+## Installation
 
-**Prerrequisito**: obtener token de acceso y configuración de las credenciales de acceso. Consulte el manual **[aquí](https://github.com/APIHub-CdC/maven-github-packages)**.
+**Prerequisite**: get access token and access credential settings. Consult the manual **[here](https://github.com/APIHub-CdC/maven-github-packages)**.
 
-**Opción 1**: En caso que la configuración se integró en el archivo **settingsAPIHUB.xml** (ubicado en la raíz del proyecto), instale las dependencias con siguiente comando:
+**Step 1**: In case the configuration was integrated into the file **settingsAPIHUB.xml** (located in the root of the project), install the dependencies with the following command:
 
 ```shell
 mvn --settings settingsAPIHUB.xml clean install -Dmaven.test.skip=true
 ```
 
-**Opción 2**: Si se integró la configuración en el **settings.xml** del **.m2**, instale las dependencias con siguiente comando:
+**Step 2**: If the configuration was integrated in the  **settings.xml** of the **.m2**, install the dependencies with the following command:
 
 ```shell
 mvn install -Dmaven.test.skip=true
 ```
 
-## Guía de inicio
+## Getting started
 
-### Paso 1. Generar llave y certificado
-Antes de lanzar la prueba se deberá tener un keystore para la llave privada y el certificado asociado a ésta.
-Para generar el keystore se ejecutan las instrucciones que se encuentran en ***src/main/security/createKeystore.sh*** ó con los siguientes comandos:
+### Step 1. Generate key and certificate
+Before launching the test, you must have a keystore for the private key and the certificate associated with it. To generate the keystore, execute the instructions found in ***src/main/security/createKeystore.sh*** or with the following commands:
 
-**Opcional**: Si desea cifrar su contenedor, coloque una contraseña en una variable de ambiente.
+**Optional**:  If you want to encrypt your container, put a password in an environment variable.
 
 ```shell
 export KEY_PASSWORD=your_super_secure_password
 ```
 
-**Opcional**: Si desea cifrar su keystore, coloque una contraseña en una variable de ambiente.
+**Optional**: If you want to encrypt your keystore, put a password in an environment variable.
 
 ```shell
 export KEYSTORE_PASSWORD=your_super_secure_keystore_password
 ```
 
-- Definición de los nombres de archivos y alias.
+- Definition of file names and aliases.
 
 ```shell
 export PRIVATE_KEY_FILE=pri_key.pem
@@ -51,13 +50,13 @@ export PKCS12_FILE=keypair.p12
 export KEYSTORE_FILE=keystore.jks
 export ALIAS=cdc
 ```
-- Generar llave y certificado.
+- Generate key and certificate.
 
 ```shell
-# Genera la llave privada.
+# Generate private key
 openssl ecparam -name secp384r1 -genkey -out ${PRIVATE_KEY_FILE}
 
-# Genera el certificado público
+# Generate public certificate
 openssl req -new -x509 -days 365 \
   -key ${PRIVATE_KEY_FILE} \
   -out ${CERTIFICATE_FILE} \
@@ -65,11 +64,11 @@ openssl req -new -x509 -days 365 \
 
 ```
 
-- Generar contenedor PKCS12 a partir de la llave privada y el certificado
+- Generate PKCS12 container from private key and certificate
 
 ```shell
-# Genera el archivo pkcs12 a partir de la llave privada y el certificado.
-# Deberá empaquetar su llave privada y el certificado.
+# Generate PKCS12 container from private key and certificate
+# You will need to package your private key and certificate.
 
 openssl pkcs12 -name ${ALIAS} \
   -export -out ${PKCS12_FILE} \
@@ -79,62 +78,63 @@ openssl pkcs12 -name ${ALIAS} \
 
 ```
 
-- Generar un keystore dummy y eliminar su contenido.
+- Generate a dummy keystore and delete its content.
 
 ```sh
-#Genera un Keystore con un par de llaves dummy.
+#Generate a Keystore with a pair of dummy keys.
 keytool -genkey -alias dummy -keyalg RSA \
     -keysize 2048 -keystore ${KEYSTORE_FILE} \
     -dname "CN=dummy, OU=, O=, L=, S=, C=" \
     -storepass ${KEYSTORE_PASSWORD} -keypass ${KEY_PASSWORD}
-#Elimina el par de llaves dummy.
+#Remove the dummy key pair.
 keytool -delete -alias dummy \
     -keystore ${KEYSTORE_FILE} \
     -storepass ${KEYSTORE_PASSWORD}
 ```
 
-- Importar el contenedor PKCS12 al keystore
+- Import the PKCS12 container to the keystore
 
 ```sh
-#Importamos el contenedor PKCS12
+#We import the PKCS12 container
 keytool -importkeystore -srckeystore ${PKCS12_FILE} \
   -srcstoretype PKCS12 \
   -srcstorepass ${KEY_PASSWORD} \
   -destkeystore ${KEYSTORE_FILE} \
   -deststoretype JKS -storepass ${KEYSTORE_PASSWORD} \
   -alias ${ALIAS}
-#Lista el contenido del Kesystore para verificar que
+#List the contents of the Kesystore to verify that
 keytool -list -keystore ${KEYSTORE_FILE} \
   -storepass ${KEYSTORE_PASSWORD}
 ```
 
-### Paso 2. Carga del certificado dentro del portal de desarrolladores
- 1. Iniciar sesión.
- 2. Dar clic en la sección "**Mis aplicaciones**".
- 3. Seleccionar la aplicación.
- 4. Ir a la pestaña de "**Certificados para @tuApp**".
+### Step 2. Uploading the certificate within the developer portal
+
+ 1. Login
+ 2. Click on the section "**Mis aplicaciones**".
+ 3. Select the application.
+ 4. Go to the tab "**Certificados para @tuApp**"
     <p align="center">
       <img src="https://github.com/APIHub-CdC/imagenes-cdc/blob/master/applications.png">
     </p>
- 5. Al abrirse la ventana emergente, seleccionar el certificado previamente creado y dar clic en el botón "**Cargar**":
+ 5. When the window opens, select the previously created certificate and click the button "**Cargar**":
     <p align="center">
       <img src="https://github.com/APIHub-CdC/imagenes-cdc/blob/master/upload_cert.png">
     </p>
-### Paso 3. Descarga del certificado de Círculo de Crédito dentro del portal de desarrolladores
- 1. Iniciar sesión.
- 2. Dar clic en la sección "**Mis aplicaciones**".
- 3. Seleccionar la aplicación.
- 4. Ir a la pestaña de "**Certificados para @tuApp**".
+### Step 3. Download the Círculo de Crédito certificate within the developer portal
+ 1. Login.
+ 2. Click on the section "**Mis aplicaciones**".
+ 3. Select the application.
+ 4. Go to the tab "**Certificados para @tuApp**".
     <p align="center">
         <img src="https://github.com/APIHub-CdC/imagenes-cdc/blob/master/applications.png">
     </p>
- 5. Al abrirse la ventana emergente, dar clic al botón "**Descargar**":
+ 5. When the window opens, click the button "**Descargar**":
     <p align="center">
         <img src="https://github.com/APIHub-CdC/imagenes-cdc/blob/master/download_cert.png">
     </p>
-### Paso 4. Modificar archivo de configuraciones
+### Step 4. Modify configuration file
 
-Para hacer uso del certificado que se descargó y el keystore que se creó se deberán modificar las rutas que se encuentran e
+To make use of the certificate that was downloaded and the keystore that was created, the routes found in **src/main/resources/config.properties**
 ```properties
 keystore_file=your_path_for_your_keystore/keystore.jks
 cdc_cert_file=your_path_for_certificate_of_cdc/cdc_cert.pem
@@ -142,25 +142,25 @@ keystore_password=your_super_secure_keystore_password
 key_alias=cdc
 key_password=your_super_secure_password
 ```
-### Paso 5. Modificar URL
-En el archivo ApiTest.java, que se encuentra en ***src/test/java/com/cdc/apihub/mx/employmentVerification/test/***. Se deberá modificar los datos de la petición y los datos de consumo:
+### Step 5. Modify URL and request data
+In the WebHookSubscriptionsApiTest.java file, found at  ***src/test/java/com/cdc/apihub/mx/employmentVerification/test/***.  The request and URL data for API consumption must be modified in setBasePath ("the_url"), as shown in the following code snippet with the corresponding data:
 
-1. Configurar ubicación y acceso de la llave creado en el **paso 1** y el certificado descargado en el **paso 2**
-   - keystoreFile: ubicacion del archivo keystore.jks
-   - cdcCertFile: ubicacion del archivo cdc_cert.pem
-   - keystorePassword: contraseña de cifrado del keystore
-   - keyAlias: alias asignado al keystore
-   - keyPassword: contraseña de cifrado del contenedor
+1. Configure location and access of the key created in **step 1**and the downloaded certificate in **step 2**
+   - keystoreFile: location of the keystore.jks file
+   - cdcCertFile: location of the cdc_cert.pem file
+   - keystorePassword: encryption password of the keystore
+   - keyAlias: alias assigned to the keystore
+   - keyPassword: container encryption password
 
-2. Credenciales de acceso dadas por Círculo de Crédito, obtenidas despues de la afiliación
-   - usernameCDC: usuario de Círculo de Crédito
-   - passwordCDC: contraseña de Círculo de Crédito
+2. Access credentials given by Círculo de Crédito, obtained after affiliation
+   - usernameCDC: Círculo de Crédito user
+   - passwordCDC: Círculo de Crédito password
 	
-2. Datos de consumo del API
-   - url: URL de la exposicón del API
-   - xApiKey: Ubicada en la aplicación (creada en el **paso 2**) del portal y nombrada como Consumer Key 
+2. API consumption data
+   - url: URL of the API exposure
+   - xApiKey: Located in the application (created in ** step 2 **) of the portal and named as Consumer Key
 
-> **NOTA:** Los datos de la siguiente petición son solo representativos.
+> **NOTE:** The data in the following request are only representative.
 
 ```java
 
@@ -251,9 +251,9 @@ public class ApiTest {
       }
 }
 ```
-### Paso 6. Ejecutar la prueba unitaria
+### Step 6. Run the unit test
 
-Teniendo los pasos anteriores ya solo falta ejecutar la prueba unitaria, con el siguiente comando:
+Having the previous steps, all that remains is to run the unit test, with the following command:
 ```shell
 mvn test -Dmaven.install.skip=true
 ```
