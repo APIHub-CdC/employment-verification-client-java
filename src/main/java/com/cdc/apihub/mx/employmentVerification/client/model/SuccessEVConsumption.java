@@ -123,6 +123,11 @@ public class SuccessEVConsumption {
 	@SerializedName("nssCheck")
 	private Boolean nssCheck = null;
 
+
+  @SerializedName(value="workingHistory", alternate={"working_history","workingHistory"}) 
+  private WorkingHistory workingHistory = null;
+
+
 	public SuccessEVConsumption request(EmploymentVerification request) {
 		this.request = request;
 		return this;
@@ -173,6 +178,18 @@ public class SuccessEVConsumption {
 		return nssCheck;
 	}
 
+	public SuccessEVConsumption workingHistory(WorkingHistory workingHistory) {
+	    this.workingHistory = workingHistory;
+	    return this;
+	  }
+
+  public WorkingHistory getWorkingHistory() {
+    return workingHistory;
+  }
+
+  public void setWorkingHistory(WorkingHistory workingHistory) {
+    this.workingHistory = workingHistory;
+  }
 	@Override
 	public boolean equals(java.lang.Object o) {
 		if (this == o) {
@@ -189,12 +206,13 @@ public class SuccessEVConsumption {
 				&& Objects.equals(this.validUntil, successEVConsumption.validUntil)
 				&& Objects.equals(this.industry, successEVConsumption.industry)
 				&& Objects.equals(this.industryRiskSegment, successEVConsumption.industryRiskSegment)
-				&& Objects.equals(this.nssCheck, successEVConsumption.nssCheck);
+				&& Objects.equals(this.nssCheck, successEVConsumption.nssCheck)
+				&& Objects.equals(this.workingHistory, successEVConsumption.workingHistory);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(request, names, birthday, workStatus, validUntil, industry, industryRiskSegment, nssCheck);
+		return Objects.hash(request, names, birthday, workStatus, validUntil, industry, industryRiskSegment, nssCheck,workingHistory);
 	}
 
 	@Override
@@ -210,6 +228,7 @@ public class SuccessEVConsumption {
 		sb.append("    industry: ").append(toIndentedString(industry)).append("\n");
 		sb.append("    industryRiskSegment: ").append(toIndentedString(industryRiskSegment)).append("\n");
 		sb.append("    nssCheck: ").append(toIndentedString(nssCheck)).append("\n");
+		sb.append("    workingHistory: ").append(toIndentedString(workingHistory)).append("\n");
 		sb.append("}");
 		return sb.toString();
 	}
